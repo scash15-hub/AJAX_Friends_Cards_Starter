@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Ro",
+        "relationship": "walking red flag",
+        "detail": "needs to be studied in a lab",
+        "hobbies": ["being delusional", "starting u", ""]
+    },
+    {
+        "name": "Olivia",
+        "relationship": "MOMMMMMM",
+        "detail": "has a story for everything",
+        "hobbies": ["", "", ""]
+    },
+    {
+        "name": "Lyra",
+        "relationship": "passenger princess",
+        "detail": "is always up for an adventure",
+        "hobbies": ["", "", ""]
+    },
+    {
+        "name": "Colleen",
+        "relationship": "favorite staff member",
+        "detail": "knows too much for her own good",
+        "hobbies": ["", "", ""]
+    },
+    {
+        "name": "Lexi",
+        "relationship": "third wheel",
+        "detail": "actually needs professional help",
+        "hobbies": ["", "", ""]
+    },
+    {
+        "name": "Lilly",
+        "relationship": "peacemaker",
+        "detail": "one minor incovenience away from crashing out",
+        "hobbies": ["", "", ""]
+    }
+]
