@@ -10,6 +10,7 @@ const cardsContainer = document.getElementById("cards");
 const statusMessage = document.getElementById("status");
 
 // CHECKPOINT 2: When the Load Friends button is clicked, run loadFriends.
+loadButton.addEventListener("click", loadFriends);
 
 
 // -------------------------------------------------------------
@@ -19,27 +20,6 @@ function loadFriends() {
   // Supplied: shows the user that the page is waiting for a response.
   statusMessage.classList.remove("error");
   statusMessage.textContent = "Loading friends...";
-
-  const xhr = new XMLHttpRequest();
-
-  xhr.open("GET", "friends.json");
-
-  xhr.onload = function () {
-
-   
-      try {
-        const friends = JSON.parse(xhr.responseText);
-        renderFriends(friends);
-      } catch (error) {
-        showDataError(error);
-      }
-    
-
-  };
-
-  xhr.send();
-
-
 
   // CHECKPOINT 2: Write the request.
   //   - Create the request and open a GET request for friends.json.
@@ -59,7 +39,24 @@ function loadFriends() {
   //     } catch (error) {
   //       showDataError(error);
   //     }
-
+  const request = new XMLHttpRequest();
+  // Request the friends data with GET.
+  request.open("GET", "friends.json");
+  // Parse successful responses; show an error for bad status or invalid JSON.
+  request.onload = function () {
+    if (request.status === 200) {
+      try {
+        const friends = JSON.parse(request.responseText);
+        renderFriends(friends);
+      } catch (error) {
+        showDataError(error);
+      }
+    } else {
+      showLoadError();
+    }
+  };
+  request.onerror = showLoadError;
+  request.send();
 }
 
 
@@ -72,22 +69,34 @@ function renderFriends(friends) {
   // Use this supplied markup inside a template literal. Replace each
   // [PLACEHOLDER] with an expression that reads the current person.
   // Hobbies is an array: show it as readable, comma-separated text.
-  let cardHTML = ""
-  friends.forEach(function (friend) {
-    cardHTML += `
-       <div class="col-12 col-md-6 col-lg-4">
+  /*
+  <div class="col-12 col-md-6 col-lg-4">
+    <article class="card h-100">
+      <div class="card-body">
+        <h2 class="card-title h4">[NAME]</h2>
+        <p class="relationship">[RELATIONSHIP]</p>
+        <p>[DETAIL]</p>
+        <p class="hobbies"><strong>Hobbies:</strong> [HOBBIES]</p>
+      </div>
+    </article>
+  </div>
+  */
+  // Build one card per friend, then replace the container contents.
+  let cardsHTML = "";
+  for (const friend of friends) {
+    cardsHTML += `
+  <div class="col-12 col-md-6 col-lg-4">
     <article class="card h-100">
       <div class="card-body">
         <h2 class="card-title h4">${friend.name}</h2>
-        <p class="relationship">Relationship: ${friend.relationship}</p>
-        <p class="detail">Detail: ${friend.detail}</p>
-        <p class="hobbies">Hobbies: ${friend.hobbies}</p>
-        </div>
+        <p class="relationship">${friend.relationship}</p>
+        <p>${friend.detail}</p>
+        <p class="hobbies"><strong>Hobbies:</strong> ${friend.hobbies.join(", ")}</p>
+      </div>
     </article>
-  </div>`})
-
-  document.getElementById('cards').innerHTML = cardHTML
-
+  </div>`;
+  }
+  cardsContainer.innerHTML = cardsHTML;
 
   // Supplied success message. Keep this after the cards are updated.
   statusMessage.classList.remove("error");
