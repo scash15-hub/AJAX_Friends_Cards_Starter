@@ -20,6 +20,27 @@ function loadFriends() {
   statusMessage.classList.remove("error");
   statusMessage.textContent = "Loading friends...";
 
+  const xhr = new XMLHttpRequest();
+
+  xhr.open("GET", "friends.json");
+
+  xhr.onload = function () {
+
+   
+      try {
+        const friends = JSON.parse(xhr.responseText);
+        renderFriends(friends);
+      } catch (error) {
+        showDataError(error);
+      }
+    
+
+  };
+
+  xhr.send();
+
+
+
   // CHECKPOINT 2: Write the request.
   //   - Create the request and open a GET request for friends.json.
   //   - Write the onload handler:
@@ -51,18 +72,21 @@ function renderFriends(friends) {
   // Use this supplied markup inside a template literal. Replace each
   // [PLACEHOLDER] with an expression that reads the current person.
   // Hobbies is an array: show it as readable, comma-separated text.
-  /*
-  <div class="col-12 col-md-6 col-lg-4">
+  let cardHTML = ""
+  friends.forEach(function (friend) {
+    cardHTML += `
+       <div class="col-12 col-md-6 col-lg-4">
     <article class="card h-100">
       <div class="card-body">
-        <h2 class="card-title h4">[NAME]</h2>
-        <p class="relationship">[RELATIONSHIP]</p>
-        <p>[DETAIL]</p>
-        <p class="hobbies"><strong>Hobbies:</strong> [HOBBIES]</p>
-      </div>
+        <h2 class="card-title h4">${friend.name}</h2>
+        <p class="relationship">Relationship: ${friend.relationship}</p>
+        <p class="detail">Detail: ${friend.detail}</p>
+        <p class="hobbies">Hobbies: ${friend.hobbies}</p>
+        </div>
     </article>
-  </div>
-  */
+  </div>`})
+
+  document.getElementById('cards').innerHTML = cardHTML
 
 
   // Supplied success message. Keep this after the cards are updated.
